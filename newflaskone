@@ -1,0 +1,21 @@
+from flask_restx import Api, Resource
+from flask import Flask,jsonify,request
+from elasticsearch import Elasticsearch
+app = Flask(__name__)
+api = Api(app)
+es=Elasticsearch()
+@app.route('/', methods=['POST', 'GET'])
+class Name(Resource):
+    def get(self):
+        return jsonify({'message': 'hello world'})
+
+    def post(self):
+        data = request.get_json()  # status code
+        return jsonify({'data': data})
+
+api.add_resource(Name, "/")
+
+
+
+if __name__ == "__main__":
+    app.run(debug=true)
