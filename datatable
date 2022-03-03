@@ -1,0 +1,60 @@
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+<title>Person Information</title>
+<meta charset="UTF-8"> <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+  <script>
+
+
+$(document).ready(function(){
+$('#example').DataTable( {
+        "ajax": "/welcome",
+        "columns": [
+<!--            { "data": "job_id" },-->
+            { "data": "user" },
+            { "data": "status" },
+            { "data": "timestamp_begin" }
+        ]
+    });
+    })
+<!--var baseurl = "http://localhost:8000";-->
+<!--var xmlhttp = new XMLHttpRequest();-->
+<!--xmlhttp.open("GET",baseurl,true);-->
+<!--xmlhttp.onreadystatechange = function(){-->
+<!--if(xmlhttp.readyState==4 && xmlhttp.status ==200){-->
+<!--var welcome = JSON.parse(xmlhttp.responseText);-->
+<!--$("#example").DataTable({-->
+<!--data:welcome,-->
+<!--"columns":[-->
+<!--{"data":"col1"},-->
+<!--{"data":"col2"},-->
+<!--{"data":"col3"},-->
+<!--{"data":"col4"}-->
+
+<!--]-->
+
+<!--});-->
+<!--}-->
+<!--};-->
+<!--xmlhttp.send();-->
+<!--});-->
+</script>
+</head>
+<body>
+
+<table id="example" class="display" style="width:100%">
+<thead>
+<tr>
+<!--<th>job_id</th>-->
+  <th>initiated by</th>
+  <th>status</th>
+  <th>data begin</th>
+
+</tr>
+</thead>
+
+</table>
+</body>
+</html>
