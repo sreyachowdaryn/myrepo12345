@@ -1,0 +1,83 @@
+from flask import Flask,redirect,url_for,render_template,request
+from elasticsearch import Elasticsearch
+from flask import jsonify
+from flask_restx import resource,Api
+import json
+import requests
+
+app=Flask(__name__)
+es = Elasticsearch('http://10.37.3.229:9200')
+# @app.route("/go",methods = ['POST'])
+# def goon():
+#     data = requests.get("http://10.37.3.229:9200/pty_discover_scan_0.9/_search")
+#     print(data.text)
+#
+@app.route('/')
+def getmethod():
+    return render_template("datatable.html")
+# @app.route("/")
+# def hello():
+#     print("hello")
+#     return render_template("datatable.html")
+
+@app.route("/click", methods = ["GET", "POST"])
+def click():
+    res = es.search(index="pty_discover_scan_0.9", body={
+        'size': 10000,
+        'query': {
+            'match_all': {}
+        }
+    })
+    print("%d documents found" % res['hits']['total'])
+    print(len(res['hits']['hits']))
+    print(res['hits']['hits'])
+    c = {}
+    dc=0
+    ret = []
+    # for hit in res['hits']['hits']:
+    #     c = hit["_source"]
+    for doc in res['hits']['hits']:
+        print("\n", doc['_id'], doc['_source'])
+        ret.append(doc['_source'])
+        dc += 1
+        print("DOC COUNT:", dc)
+
+    return jsonify(ret)
+
+
+
+@app.route('/welcome',methods = ["GET", "POST"])
+def welcomes():
+    c = {}
+    res = es.search(index="pty_discover_scan_0.9", body={"query": {"match_all": {}}})
+    ret = []
+    for doc in res['hits']['hits']:
+        ret.append(doc['_source'])
+        c = {"data": ret}
+        print(c)
+    return c
+#
+# class hello(resource):
+#     def get(self):
+#         c = []
+#         res = es.search(index="pty_discover_scan_0.9", body={"query": {"match_all": {}}})
+#
+#         for hit in res['hits']['hits']:
+#             c = hit["_source"]
+#         return c
+#     def post(self):
+#         c = []
+#         res = es.search(index="pty_discover_reference_address_0.9", body={"query": {"match_all": {}}})
+#
+#         for hit in res['hits']['hits']:
+#             c = hit["_source"]
+#         return c
+#
+# api = Api(app)
+# api.add_resource(hello, "/welcome/hello")
+def main():
+    app.run(host="0.0.0.0", debug=True, port=8000)
+
+
+if __name__ == "__main__":
+    main()
